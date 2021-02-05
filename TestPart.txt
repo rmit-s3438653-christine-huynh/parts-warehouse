@@ -1,0 +1,134 @@
+package assign2;
+import java.util.Scanner;
+import java.util.HashMap;
+
+
+
+
+
+import assign2.Part;
+
+public class TestPart 
+{
+	static HashMap<String, Part> partsList = new HashMap<String, Part>();
+
+	public static void main (String args[])
+	{
+		boolean isRunning = true;
+
+		Part p122 = new Part ("p122", "Chain", 48, 12.5);
+		Part p123 = new Part ("p123", "Chain Guard", 73, 22.0);
+		Part p124 = new Part ("p124", "Crank", 400, 11.5);
+		Part p125 = new Part ("p125", "Pedal", 38, 6.5);
+		Part p126 = new Part ("p126", "Handlebar", 123, 9.5);	
+
+		partsList.put(p122.getID(),p122);
+		partsList.put(p123.getID(),p123);
+		partsList.put(p124.getID(),p124);
+		partsList.put(p125.getID(),p125);
+		partsList.put(p126.getID(),p126);
+
+		while(isRunning)
+		{
+			Scanner userInput = new Scanner(System.in);
+			System.out.println("Please enter S (Supply) or "
+					+ "R (Replenish) followed by ID and quantity: ");
+			String userInputString = userInput.nextLine();
+
+			if (userInputString.equalsIgnoreCase(""))
+			{
+				isRunning = false;
+			}
+			else
+			{
+				String[] splitString = userInputString.split(" ");
+
+				if(checkForPartByID(splitString[1]))
+				{
+					switch (splitString[0])
+					{
+					case "R":
+						partsList.get(splitString[1]).replenish(Integer.parseInt(splitString[2]));
+						System.out.println("New Stock level for "
+								+ splitString[1] + " (" 
+								+ partsList.get(splitString[1]).getName() + ") is "
+								+ partsList.get(splitString[1]).getStockLevel());
+						break;
+					case "S": 
+						partsList.get(splitString[1]).supply(Integer.parseInt(splitString[2]));
+						System.out.println("New Stock level for "
+								+ splitString[1] + " (" 
+								+ partsList.get(splitString[1]).getName() + ") is "
+								+ partsList.get(splitString[1]).getStockLevel());
+						break;
+
+					default:
+
+						System.out.println("invaild string");
+						break;
+					}
+				}
+				else
+				{
+					System.out.println("No part found with ID " 
+							+ splitString[1]
+									+ ". ");
+				}
+			}
+			showStock();
+		}
+	}
+
+	public static void showStock()
+	{
+		for (String ID : partsList.keySet())
+		{
+			System.out.println("Final stock for "
+					+ partsList.get(ID).getID() + " ("
+					+ partsList.get(ID).getName() + ")"
+					+ " is " + partsList.get(ID).getStockLevel() + ".");
+		}
+	}
+	
+	
+	public static boolean checkForPartByID(String aID)
+	{
+		for (String ID : partsList.keySet())
+		{
+			if (ID.equalsIgnoreCase(aID))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	public void testingPartClass()
+	{
+		Part part = new Part("p122", "Chain", 5000, 0.10);
+
+		part.replenish(1000);
+		part.replenish(500);
+		for (int i = 0; i < 2; i++)
+		{
+			int qty = 6000;
+			double amount = part.supply(qty);
+
+			if (amount > 0)
+				System.out.println(part.getID() 
+						+ " " 
+						+ qty
+						+ " supplied. "
+						+ " cost = "
+						+ amount);
+			else 
+				System.out.println(part.getID()
+						+ " "
+						+ qty
+						+ " items not available. ");
+			System.out.println("Available qty = "
+					+ part.getStockLevel());		
+		}
+	}
+}
+
+

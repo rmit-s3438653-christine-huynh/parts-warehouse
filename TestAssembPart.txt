@@ -1,0 +1,51 @@
+package assign2;
+
+public class TestAssembledPart 
+{
+	public static void main(String args[])
+	{
+		// Constructing two Part objects (the base parts)
+		Part part0 = new Part("p101", "Crank", 218, 12.2);
+		Part part1 = new Part ("p102", "Pedal", 320, 14.3);
+		
+		//Constructing AssembledPart object assembled from p101 & p102.
+		AssembledPart part2 = new AssembledPart ("p183", 
+				"Crank & Pedal", 80, 3.5, part0, part1);
+		//Replenish stock by 100 items.
+		part2.replenish(100);
+		
+		//Supplying the maximum possible assembled parts - combination
+		//of existing parts and base parts available for assembly.
+		System.out.println("Supplying max number of (assembled) part");
+		int totalAvail = part2.getStockLevel()
+				+ part2.getAvailForAssembly();
+		double cost = part2.supply(totalAvail);
+		if (cost > 0)
+		{
+			System.out.println(part2.getID() + " Total cost for "
+					+ totalAvail + " items = " + cost); 
+		}
+		else
+			System.out.println(part2.getID()
+					+ " Insufficient parts to supply " + totalAvail);
+		
+		//Printing the stock level for assembled and base parts.
+		System.out.println(part0.getID() + " (base part) Available qty = "
+				+ part0.getStockLevel());
+		System.out.println(part1.getID() + " (base part) Available qty = "
+				+ part1.getStockLevel());
+		System.out.println(part2.getID() + " (base part) Available qty = "
+				+ part2.getStockLevel());
+		
+		//Attempt to supply another 10 items (bound to fail).
+		System.out.println("Trying to supply another 10 parts");
+		int qty = 10;
+		cost = part2.supply(qty);
+		if (cost > 0)
+			System.out.println(part2.getID() + "Total cost for " + qty
+			+ " items = " + cost);
+		else
+			System.out.println(part2.getID()
+					+ " Insufficient parts to supply " + qty);
+	}
+}

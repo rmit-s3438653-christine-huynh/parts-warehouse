@@ -1,0 +1,50 @@
+package assign2;
+
+public class Part 
+{
+	private String id = "not filled";
+	private String name = "not filled";
+	protected int stockLevel = -99;
+	protected double unitPrice = -99.9;
+	
+	public Part(String aID, String aName, int aStockLevel, double aUnitPrice)
+	{
+		this.id = aID;
+		this.name = aName;
+		this.stockLevel = aStockLevel;
+		this.unitPrice = aUnitPrice;
+	}
+
+	public String getID()
+	{
+		return this.id;
+	}
+	
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	public int getStockLevel()
+	{
+		return this.stockLevel;
+	}
+
+	public void replenish(int qty)
+	{
+		this.stockLevel += qty;
+	}
+
+	public double supply(int qty) 
+	{
+		if (qty <= this.stockLevel)
+		{
+			this.stockLevel -= qty;
+			return this.unitPrice * qty; 
+		}
+		else
+		{
+			return -1.0;
+		}
+	}
+}
